@@ -69,7 +69,7 @@ const setData = () => {
   }
 };
 
-const formValidation = (data, error = false) => {
+const formValidation = (error = false) => {
   const inputs = document.querySelectorAll('input');
   const errorMessage = document.querySelectorAll('.error-message');
 
@@ -110,10 +110,11 @@ const formValidation = (data, error = false) => {
   }
 };
 
-form.addEventListener('submit', (e, data) => {
+form.addEventListener('submit', (e, data, error) => {
   e.preventDefault();
   setData();
-  formValidation();
+
+  error = formValidation();
 
   data = {
     title: document.getElementById('book-title').value.trim(),

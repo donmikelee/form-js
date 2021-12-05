@@ -203,8 +203,8 @@ var setData = function setData() {
   }
 };
 
-var formValidation = function formValidation(data) {
-  var error = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+var formValidation = function formValidation() {
+  var error = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
   var inputs = document.querySelectorAll('input');
   var errorMessage = document.querySelectorAll('.error-message');
   inputWithError = {
@@ -238,10 +238,10 @@ var formValidation = function formValidation(data) {
   }
 };
 
-form.addEventListener('submit', function (e, data) {
+form.addEventListener('submit', function (e, data, error) {
   e.preventDefault();
   setData();
-  formValidation();
+  error = formValidation();
   data = {
     title: document.getElementById('book-title').value.trim(),
     author: document.getElementById('author-name').value.trim(),
