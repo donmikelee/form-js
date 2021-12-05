@@ -23,4 +23,10 @@ tbody > tr:nth-child(odd) {
   background-color: #dddddd;
 }
 
+.error-message{
+  color: firebrick;
+  font-weight: bold;
+  font-size: 10px;
+}
+
 /*# sourceMappingURL=/styles.956d002c.css.map */

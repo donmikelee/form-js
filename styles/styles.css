@@ -22,3 +22,9 @@ thead > td, th {
 tbody > tr:nth-child(odd) {
   background-color: #dddddd;
 }
+
+.error-message{
+  color: firebrick;
+  font-weight: bold;
+  font-size: 10px;
+}

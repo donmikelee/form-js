@@ -69,15 +69,57 @@ const setData = () => {
   }
 };
 
+const formValidation = (data, error = false) => {
+  const inputs = document.querySelectorAll('input');
+  const errorMessage = document.querySelectorAll('.error-message');
+
+  inputWithError = {
+    title: errorMessage[0],
+    author: errorMessage[1],
+    priority: errorMessage[2],
+    genre: errorMessage[3],
+  };
+
+  data = {
+    title: inputs[0].value.trim(),
+    author: inputs[1].value.trim(),
+    priority: inputs[2].value.trim(),
+    genre: inputs[3].value.trim(),
+  };
+
+  const { title, author, priority, genre } = data;
+
+  for (i = 0; i < inputs.length; i++) {
+    if (
+      inputs[i].value == 0 ||
+      inputs[i].value == null ||
+      inputs[i].value == ''
+    ) {
+      errorMessage[
+        i
+      ].innerHTML = `Podana wartość to ${inputs[i].value}, to pole nie może być puste`;
+
+      error = true;
+    }
+  }
+
+  if (author.length < 3) {
+    inputWithError.author.innerHTML = `Podana wartośc to ${author}, to pole musi mieć co najmniej 3 znaki`;
+
+    error = true;
+  }
+};
+
 form.addEventListener('submit', (e, data) => {
   e.preventDefault();
   setData();
+  formValidation();
 
   data = {
-    title: document.getElementById('book-title').value,
-    author: document.getElementById('author-name').value,
-    priority: document.getElementById('priority').value,
-    genre: document.getElementById('book-genre').value,
+    title: document.getElementById('book-title').value.trim(),
+    author: document.getElementById('author-name').value.trim(),
+    priority: document.getElementById('priority').value.trim(),
+    genre: document.getElementById('book-genre').value.trim(),
   };
 
   const { title, author, priority, genre } = data;

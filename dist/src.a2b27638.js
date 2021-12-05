@@ -203,20 +203,56 @@ var setData = function setData() {
   }
 };
 
-form.addEventListener('submit', function (e, data) {
-  e.preventDefault();
-  setData();
+var formValidation = function formValidation(data) {
+  var error = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  var inputs = document.querySelectorAll('input');
+  var errorMessage = document.querySelectorAll('.error-message');
+  inputWithError = {
+    title: errorMessage[0],
+    author: errorMessage[1],
+    priority: errorMessage[2],
+    genre: errorMessage[3]
+  };
   data = {
-    title: document.getElementById('book-title').value,
-    author: document.getElementById('author-name').value,
-    priority: document.getElementById('priority').value,
-    genre: document.getElementById('book-genre').value
+    title: inputs[0].value.trim(),
+    author: inputs[1].value.trim(),
+    priority: inputs[2].value.trim(),
+    genre: inputs[3].value.trim()
   };
   var _data2 = data,
       title = _data2.title,
       author = _data2.author,
       priority = _data2.priority,
       genre = _data2.genre;
+
+  for (i = 0; i < inputs.length; i++) {
+    if (inputs[i].value == 0 || inputs[i].value == null || inputs[i].value == '') {
+      errorMessage[i].innerHTML = "Podana warto\u015B\u0107 to ".concat(inputs[i].value, ", to pole nie mo\u017Ce by\u0107 puste");
+      error = true;
+    }
+  }
+
+  if (author.length < 3) {
+    inputWithError.author.innerHTML = "Podana warto\u015Bc to ".concat(author, ", to pole musi mie\u0107 co najmniej 3 znaki");
+    error = true;
+  }
+};
+
+form.addEventListener('submit', function (e, data) {
+  e.preventDefault();
+  setData();
+  formValidation();
+  data = {
+    title: document.getElementById('book-title').value.trim(),
+    author: document.getElementById('author-name').value.trim(),
+    priority: document.getElementById('priority').value.trim(),
+    genre: document.getElementById('book-genre').value.trim()
+  };
+  var _data3 = data,
+      title = _data3.title,
+      author = _data3.author,
+      priority = _data3.priority,
+      genre = _data3.genre;
   var titleArray = JSON.parse(localStorage.getItem('title'));
   titleArray.push(title);
   var authorArray = JSON.parse(localStorage.getItem('author'));
@@ -263,7 +299,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51675" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51907" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

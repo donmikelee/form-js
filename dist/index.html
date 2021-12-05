@@ -9,10 +9,13 @@
   <body>
     <div id="app">
       <form id="form">
+        <div class="error-message"></div>
         <label for="book-title">Tytuł książki</label>
         <input id="book-title" type="text">
+        <div class="error-message"></div>
         <label for="author-name">Autor książki</label>
         <input id="author-name" type="text">
+        <div class="error-message"></div>
         <label for="number-of-priority">Number of prority</label>
         <input list="number-of-priority" name="number-of-priority" id="priority">
         <datalist id="number-of-priority">
@@ -22,6 +25,7 @@
           <option value="4"></option>
           <option value="5"></option>
         </datalist>
+        <div class="error-message"></div>
         <label for="book-genres">Book genres</label>
         <input list="book-genres" name="book-genres" id="book-genre">
         <datalist id="book-genres">
@@ -31,7 +35,9 @@
         </datalist>
         <button id="submit" type="submit">Wyślij</button>
       </form>
-      <button id="clear-list">Wyczyść listę</button>
+      <button id="clear-list" onclick="localStorage.clear()">
+        Wyczyść listę
+      </button>
       <div class="table">
         <table id="table">
           <thead>
