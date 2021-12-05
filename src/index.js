@@ -110,11 +110,11 @@ const formValidation = (error = false) => {
   }
 };
 
-form.addEventListener('submit', (e, data, error) => {
+form.addEventListener('submit', (e, data) => {
   e.preventDefault();
   setData();
 
-  error = formValidation();
+  formValidation();
 
   data = {
     title: document.getElementById('book-title').value.trim(),

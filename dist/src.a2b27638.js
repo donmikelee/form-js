@@ -238,10 +238,10 @@ var formValidation = function formValidation() {
   }
 };
 
-form.addEventListener('submit', function (e, data, error) {
+form.addEventListener('submit', function (e, data) {
   e.preventDefault();
   setData();
-  error = formValidation();
+  formValidation();
   data = {
     title: document.getElementById('book-title').value.trim(),
     author: document.getElementById('author-name').value.trim(),
