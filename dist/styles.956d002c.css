@@ -1,0 +1,26 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+}
+
+.table{
+  margin: 20px auto 20px auto;
+}
+
+.table > table {
+  margin: 0 auto 0 auto;
+}
+
+
+thead > td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tbody > tr:nth-child(odd) {
+  background-color: #dddddd;
+}
+
+/*# sourceMappingURL=/styles.956d002c.css.map */

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles/styles.css" />
+  </head>
+
+  <body>
+    <div id="app">
+      <form id="form">
+        <label for="book-title">Tytuł książki</label>
+        <input id="book-title" type="text" />
+        <label for="author-name">Autor książki</label>
+        <input id="author-name" type="text" />
+        <label for="number-of-priority">Number of prority</label>
+        <input
+          list="number-of-priority"
+          name="number-of-priority"
+          id="priority"
+        />
+        <datalist id="number-of-priority">
+          <option value="1"></option>
+          <option value="2"></option>
+          <option value="3"></option>
+          <option value="4"></option>
+          <option value="5"></option>
+        </datalist>
+        <label for="book-genres">Book genres</label>
+        <input list="book-genres" name="book-genres" id="book-genre" />
+        <datalist id="book-genres">
+          <option value="Thriller"></option>
+          <option value="Mystery"></option>
+          <option value="Fantasy"></option>
+        </datalist>
+        <button id="submit" type="submit">Wyślij</button>
+      </form>
+      <button id="clear-storage" onclick="localStorage.clear()">
+        Wyczyść listę
+      </button>
+      <div class="table">
+        <table id="table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Number of priority</th>
+              <th>Genre</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <script src="src/index.js"></script>
+  </body>
+</html>
