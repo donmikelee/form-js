@@ -129,10 +129,10 @@ var tableBody = document.querySelector('tbody');
 
 var getDataToTable = function getDataToTable(data) {
   data = {
-    title: localStorage.getItem('title'),
-    author: localStorage.getItem('author'),
-    priority: localStorage.getItem('priority'),
-    genre: localStorage.getItem('genre')
+    title: JSON.parse(localStorage.getItem('title')),
+    author: JSON.parse(localStorage.getItem('author')),
+    priority: JSON.parse(localStorage.getItem('priority')),
+    genre: JSON.parse(localStorage.getItem('genre'))
   };
   var _data = data,
       title = _data.title,
@@ -141,31 +141,29 @@ var getDataToTable = function getDataToTable(data) {
       genre = _data.genre;
 
   if (title !== null) {
-    var dataArray = [title, author, priority, genre];
-    var row = document.createElement('tr');
-
-    for (i = 0; i < dataArray.length; i++) {
-      var cell = document.createElement('td');
-      cell.innerHTML = dataArray[i];
-      row.appendChild(cell);
+    for (i = 0; i < title.length; i++) {
+      var newDataArray = [];
+      newDataArray.push(title[i], author[i], priority[i], genre[i]);
+      var row = tableBody.insertRow(i);
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      var cell3 = row.insertCell(2);
+      var cell4 = row.insertCell(3);
+      cell1.innerHTML = title[i];
+      cell2.innerHTML = author[i];
+      cell3.innerHTML = priority[i];
+      cell4.innerHTML = genre[i];
     }
-
-    tableBody.appendChild(row);
+  } else {
+    console.log('Brak danych do pobrania');
   }
 };
 
 var createTable = function createTable(data) {
-  data = {
-    title: document.getElementById('book-title').value,
-    author: document.getElementById('author-name').value,
-    priority: document.getElementById('priority').value,
-    genre: document.getElementById('book-genre').value
-  };
-  var _data2 = data,
-      title = _data2.title,
-      author = _data2.author,
-      priority = _data2.priority,
-      genre = _data2.genre;
+  var title = data.title,
+      author = data.author,
+      priority = data.priority,
+      genre = data.genre;
   var dataArray = [title, author, priority, genre];
   var row = document.createElement('tr');
 
@@ -214,11 +212,11 @@ form.addEventListener('submit', function (e, data) {
     priority: document.getElementById('priority').value,
     genre: document.getElementById('book-genre').value
   };
-  var _data3 = data,
-      title = _data3.title,
-      author = _data3.author,
-      priority = _data3.priority,
-      genre = _data3.genre;
+  var _data2 = data,
+      title = _data2.title,
+      author = _data2.author,
+      priority = _data2.priority,
+      genre = _data2.genre;
   var titleArray = JSON.parse(localStorage.getItem('title'));
   titleArray.push(title);
   var authorArray = JSON.parse(localStorage.getItem('author'));
@@ -231,7 +229,7 @@ form.addEventListener('submit', function (e, data) {
   localStorage.setItem('author', JSON.stringify(authorArray));
   localStorage.setItem('priority', JSON.stringify(priorityArray));
   localStorage.setItem('genre', JSON.stringify(genreArray));
-  createTable();
+  createTable(data);
   clearInputs();
 });
 window.addEventListener('load', function () {
@@ -265,7 +263,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63478" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51675" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

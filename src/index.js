@@ -3,44 +3,43 @@ const tableBody = document.querySelector('tbody');
 
 const getDataToTable = (data) => {
   data = {
-    title: localStorage.getItem('title'),
-    author: localStorage.getItem('author'),
-    priority: localStorage.getItem('priority'),
-    genre: localStorage.getItem('genre'),
+    title: JSON.parse(localStorage.getItem('title')),
+    author: JSON.parse(localStorage.getItem('author')),
+    priority: JSON.parse(localStorage.getItem('priority')),
+    genre: JSON.parse(localStorage.getItem('genre')),
   };
 
   const { title, author, priority, genre } = data;
 
   if (title !== null) {
-    const dataArray = [title, author, priority, genre];
+    for (i = 0; i < title.length; i++) {
+      const newDataArray = [];
 
-    let row = document.createElement('tr');
+      newDataArray.push(title[i], author[i], priority[i], genre[i]);
 
-    for (i = 0; i < dataArray.length; i++) {
-      let cell = document.createElement('td');
+      const row = tableBody.insertRow(i);
 
-      cell.innerHTML = dataArray[i];
+      let cell1 = row.insertCell(0);
+      let cell2 = row.insertCell(1);
+      let cell3 = row.insertCell(2);
+      let cell4 = row.insertCell(3);
 
-      row.appendChild(cell);
+      cell1.innerHTML = title[i];
+      cell2.innerHTML = author[i];
+      cell3.innerHTML = priority[i];
+      cell4.innerHTML = genre[i];
     }
-
-    tableBody.appendChild(row);
+  } else {
+    console.log('Brak danych do pobrania');
   }
 };
 
 const createTable = (data) => {
-  data = {
-    title: document.getElementById('book-title').value,
-    author: document.getElementById('author-name').value,
-    priority: document.getElementById('priority').value,
-    genre: document.getElementById('book-genre').value,
-  };
-
   const { title, author, priority, genre } = data;
 
   const dataArray = [title, author, priority, genre];
 
-  let row = document.createElement('tr');
+  const row = document.createElement('tr');
 
   for (i = 0; i < dataArray.length; i++) {
     let cell = document.createElement('td');
@@ -100,7 +99,7 @@ form.addEventListener('submit', (e, data) => {
   localStorage.setItem('priority', JSON.stringify(priorityArray));
   localStorage.setItem('genre', JSON.stringify(genreArray));
 
-  createTable();
+  createTable(data);
   clearInputs();
 });
 
