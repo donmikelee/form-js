@@ -1,6 +1,7 @@
 const form = document.getElementById('form');
 const tableBody = document.querySelector('tbody');
 
+
 const getDataToTable = (data) => {
   data = {
     title: JSON.parse(localStorage.getItem('title')),
@@ -35,6 +36,14 @@ const getDataToTable = (data) => {
 };
 
 const createTable = (data) => {
+ 
+  data = {
+    title: document.getElementById('book-title').value.trim(),
+    author: document.getElementById('author-name').value.trim(),
+    priority: document.getElementById('priority').value.trim(),
+    genre: document.getElementById('book-genre').value.trim(),
+  }
+
   const { title, author, priority, genre } = data;
 
   const dataArray = [title, author, priority, genre];
@@ -69,83 +78,89 @@ const setData = () => {
   }
 };
 
-const formValidation = (error = false) => {
+const displayErrors = () => {
+  debugger
   const inputs = document.querySelectorAll('input');
-  const errorMessage = document.querySelectorAll('.error-message');
+  const errorMessages = document.querySelectorAll('.error-message')
 
-  inputWithError = {
-    title: errorMessage[0],
-    author: errorMessage[1],
-    priority: errorMessage[2],
-    genre: errorMessage[3],
-  };
+  for(i=0; i > inputs.length; i++){
+    
+    const isError = inputs[i].hasAttribute('error')
 
-  data = {
-    title: inputs[0].value.trim(),
-    author: inputs[1].value.trim(),
-    priority: inputs[2].value.trim(),
-    genre: inputs[3].value.trim(),
-  };
+    console.log(isError)
 
-  const { title, author, priority, genre } = data;
-
-  for (i = 0; i < inputs.length; i++) {
-    if (
-      inputs[i].value == 0 ||
-      inputs[i].value == null ||
-      inputs[i].value == ''
-    ) {
-      errorMessage[
-        i
-      ].innerHTML = `Podana wartość to ${inputs[i].value}, to pole nie może być puste`;
-
-      error = true;
+    if(isError){
+      errorMessages[i].innerHTML = `Pole zostało źle wypełnione`
+    }
+    else{
+      errorMessages[i].innerHTML = ``
     }
   }
 
-  if (author.length < 3) {
-    inputWithError.author.innerHTML = `Podana wartośc to ${author}, to pole musi mieć co najmniej 3 znaki`;
-
-    error = true;
-  }
 };
 
-form.addEventListener('submit', (e, data) => {
-  e.preventDefault();
-  setData();
+const getDataFromStorage = (data) =>{
 
-  formValidation();
-
-  data = {
-    title: document.getElementById('book-title').value.trim(),
-    author: document.getElementById('author-name').value.trim(),
-    priority: document.getElementById('priority').value.trim(),
-    genre: document.getElementById('book-genre').value.trim(),
-  };
+  data = inputData
 
   const { title, author, priority, genre } = data;
+    
+      const titleArray = JSON.parse(localStorage.getItem('title'));
+      titleArray.push(title);
+    
+      const authorArray = JSON.parse(localStorage.getItem('author'));
+      authorArray.push(author);
+    
+      const priorityArray = JSON.parse(localStorage.getItem('priority'));
+      priorityArray.push(priority);
+    
+      const genreArray = JSON.parse(localStorage.getItem('genre'));
+      genreArray.push(genre);
+    
+      localStorage.setItem('title', JSON.stringify(titleArray));
+      localStorage.setItem('author', JSON.stringify(authorArray));
+      localStorage.setItem('priority', JSON.stringify(priorityArray));
+      localStorage.setItem('genre', JSON.stringify(genreArray));
+} 
 
-  const titleArray = JSON.parse(localStorage.getItem('title'));
-  titleArray.push(title);
+const checkInputs = () => {
 
-  const authorArray = JSON.parse(localStorage.getItem('author'));
-  authorArray.push(author);
+  const inputs = document.querySelectorAll('input')
 
-  const priorityArray = JSON.parse(localStorage.getItem('priority'));
-  priorityArray.push(priority);
+  formInputs = {
+    title: inputs[0],
+    author: inputs[1],
+    priority: inputs[2],
+    title: inputs[3],
+  }
 
-  const genreArray = JSON.parse(localStorage.getItem('genre'));
-  genreArray.push(genre);
+  for(let input of inputs){
+    if(input.value == '' || input.value == 0 || input.value == null){
+      const setErrorAtt = input.setAttribute('error', '')
+    }
+    else{
+      const removeErrorAtt = input.removeAttribute('error')
+    }
+  }
 
-  localStorage.setItem('title', JSON.stringify(titleArray));
-  localStorage.setItem('author', JSON.stringify(authorArray));
-  localStorage.setItem('priority', JSON.stringify(priorityArray));
-  localStorage.setItem('genre', JSON.stringify(genreArray));
+  if (formInputs.author.value.length < 3) {
+    const setErrorForAuthor = formInputs.author.setAttribute('error', '')
+  }
+  else{
+    const removeErrorForAuthor = formInputs.author.removeAttribute('error')
+  }
+}
 
-  createTable(data);
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  setData();
+  checkInputs();
+  displayErrors();
   clearInputs();
 });
 
 window.addEventListener('load', () => {
   getDataToTable();
+  console.log('Czy to działa?')
 });

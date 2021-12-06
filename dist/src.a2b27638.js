@@ -118,6 +118,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"src/index.js":[function(require,module,exports) {
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -160,10 +162,17 @@ var getDataToTable = function getDataToTable(data) {
 };
 
 var createTable = function createTable(data) {
-  var title = data.title,
-      author = data.author,
-      priority = data.priority,
-      genre = data.genre;
+  data = {
+    title: document.getElementById('book-title').value.trim(),
+    author: document.getElementById('author-name').value.trim(),
+    priority: document.getElementById('priority').value.trim(),
+    genre: document.getElementById('book-genre').value.trim()
+  };
+  var _data2 = data,
+      title = _data2.title,
+      author = _data2.author,
+      priority = _data2.priority,
+      genre = _data2.genre;
   var dataArray = [title, author, priority, genre];
   var row = document.createElement('tr');
 
@@ -203,51 +212,25 @@ var setData = function setData() {
   }
 };
 
-var formValidation = function formValidation() {
-  var error = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+var displayErrors = function displayErrors() {
+  debugger;
   var inputs = document.querySelectorAll('input');
-  var errorMessage = document.querySelectorAll('.error-message');
-  inputWithError = {
-    title: errorMessage[0],
-    author: errorMessage[1],
-    priority: errorMessage[2],
-    genre: errorMessage[3]
-  };
-  data = {
-    title: inputs[0].value.trim(),
-    author: inputs[1].value.trim(),
-    priority: inputs[2].value.trim(),
-    genre: inputs[3].value.trim()
-  };
-  var _data2 = data,
-      title = _data2.title,
-      author = _data2.author,
-      priority = _data2.priority,
-      genre = _data2.genre;
+  var errorMessages = document.querySelectorAll('.error-message');
 
-  for (i = 0; i < inputs.length; i++) {
-    if (inputs[i].value == 0 || inputs[i].value == null || inputs[i].value == '') {
-      errorMessage[i].innerHTML = "Podana warto\u015B\u0107 to ".concat(inputs[i].value, ", to pole nie mo\u017Ce by\u0107 puste");
-      error = true;
+  for (i = 0; i > inputs.length; i++) {
+    var isError = inputs[i].hasAttribute('error');
+    console.log(isError);
+
+    if (isError) {
+      errorMessages[i].innerHTML = "Pole zosta\u0142o \u017Ale wype\u0142nione";
+    } else {
+      errorMessages[i].innerHTML = "";
     }
-  }
-
-  if (author.length < 3) {
-    inputWithError.author.innerHTML = "Podana warto\u015Bc to ".concat(author, ", to pole musi mie\u0107 co najmniej 3 znaki");
-    error = true;
   }
 };
 
-form.addEventListener('submit', function (e, data) {
-  e.preventDefault();
-  setData();
-  formValidation();
-  data = {
-    title: document.getElementById('book-title').value.trim(),
-    author: document.getElementById('author-name').value.trim(),
-    priority: document.getElementById('priority').value.trim(),
-    genre: document.getElementById('book-genre').value.trim()
-  };
+var getDataFromStorage = function getDataFromStorage(data) {
+  data = inputData;
   var _data3 = data,
       title = _data3.title,
       author = _data3.author,
@@ -265,11 +248,52 @@ form.addEventListener('submit', function (e, data) {
   localStorage.setItem('author', JSON.stringify(authorArray));
   localStorage.setItem('priority', JSON.stringify(priorityArray));
   localStorage.setItem('genre', JSON.stringify(genreArray));
-  createTable(data);
+};
+
+var checkInputs = function checkInputs() {
+  var inputs = document.querySelectorAll('input');
+  formInputs = _defineProperty({
+    title: inputs[0],
+    author: inputs[1],
+    priority: inputs[2]
+  }, "title", inputs[3]);
+
+  var _iterator2 = _createForOfIteratorHelper(inputs),
+      _step2;
+
+  try {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var input = _step2.value;
+
+      if (input.value == '' || input.value == 0 || input.value == null) {
+        var setErrorAtt = input.setAttribute('error', '');
+      } else {
+        var removeErrorAtt = input.removeAttribute('error');
+      }
+    }
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
+  }
+
+  if (formInputs.author.value.length < 3) {
+    var setErrorForAuthor = formInputs.author.setAttribute('error', '');
+  } else {
+    var removeErrorForAuthor = formInputs.author.removeAttribute('error');
+  }
+};
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  setData();
+  checkInputs();
+  displayErrors();
   clearInputs();
 });
 window.addEventListener('load', function () {
   getDataToTable();
+  console.log('Czy to działa?');
 });
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -299,7 +323,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51907" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52672" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
