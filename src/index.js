@@ -79,15 +79,12 @@ const setData = () => {
 };
 
 const displayErrors = () => {
-  debugger
   const inputs = document.querySelectorAll('input');
   const errorMessages = document.querySelectorAll('.error-message')
 
-  for(i=0; i > inputs.length; i++){
-    
-    const isError = inputs[i].hasAttribute('error')
+  for(i=0; i < inputs.length; i++){
 
-    console.log(isError)
+    const isError = inputs[i].hasAttribute('error')
 
     if(isError){
       errorMessages[i].innerHTML = `Pole zostało źle wypełnione`
@@ -99,9 +96,15 @@ const displayErrors = () => {
 
 };
 
-const getDataFromStorage = (data) =>{
+const setDatatoStorage = (data) =>{
 
-  data = inputData
+  data = {
+    title: document.getElementById('book-title').value.trim(),
+    author: document.getElementById('author-name').value.trim(),
+    priority: document.getElementById('priority').value.trim(),
+    genre: document.getElementById('book-genre').value.trim(),
+  }
+
 
   const { title, author, priority, genre } = data;
     
@@ -123,6 +126,19 @@ const getDataFromStorage = (data) =>{
       localStorage.setItem('genre', JSON.stringify(genreArray));
 } 
 
+const conditionsForForm = () => {
+  const isError = form.hasAttribute('error')
+
+  if(isError == true){
+    displayErrors();
+  }
+  else{
+    createTable()
+    setDatatoStorage();
+    clearInputs();
+  }
+}
+
 const checkInputs = () => {
 
   const inputs = document.querySelectorAll('input')
@@ -131,36 +147,42 @@ const checkInputs = () => {
     title: inputs[0],
     author: inputs[1],
     priority: inputs[2],
-    title: inputs[3],
+    genre: inputs[3],
   }
 
   for(let input of inputs){
+   
     if(input.value == '' || input.value == 0 || input.value == null){
       const setErrorAtt = input.setAttribute('error', '')
+      const setErrorToForm = form.setAttribute('error', '')
     }
     else{
       const removeErrorAtt = input.removeAttribute('error')
+      const removeErrorForm = form.removeAttribute('error')
     }
   }
 
   if (formInputs.author.value.length < 3) {
     const setErrorForAuthor = formInputs.author.setAttribute('error', '')
+    const setErrorForm= form.setAttribute('error', '')
   }
   else{
     const removeErrorForAuthor = formInputs.author.removeAttribute('error')
+    const rErrorForm = form.removeAttribute('error')
   }
 }
 
+
+
 form.addEventListener('submit', (e) => {
+
   e.preventDefault();
 
   setData();
   checkInputs();
-  displayErrors();
-  clearInputs();
+  conditionsForForm();
 });
 
 window.addEventListener('load', () => {
   getDataToTable();
-  console.log('Czy to działa?')
 });

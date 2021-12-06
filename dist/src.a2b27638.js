@@ -118,8 +118,6 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"src/index.js":[function(require,module,exports) {
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -213,13 +211,11 @@ var setData = function setData() {
 };
 
 var displayErrors = function displayErrors() {
-  debugger;
   var inputs = document.querySelectorAll('input');
   var errorMessages = document.querySelectorAll('.error-message');
 
-  for (i = 0; i > inputs.length; i++) {
+  for (i = 0; i < inputs.length; i++) {
     var isError = inputs[i].hasAttribute('error');
-    console.log(isError);
 
     if (isError) {
       errorMessages[i].innerHTML = "Pole zosta\u0142o \u017Ale wype\u0142nione";
@@ -229,8 +225,13 @@ var displayErrors = function displayErrors() {
   }
 };
 
-var getDataFromStorage = function getDataFromStorage(data) {
-  data = inputData;
+var setDatatoStorage = function setDatatoStorage(data) {
+  data = {
+    title: document.getElementById('book-title').value.trim(),
+    author: document.getElementById('author-name').value.trim(),
+    priority: document.getElementById('priority').value.trim(),
+    genre: document.getElementById('book-genre').value.trim()
+  };
   var _data3 = data,
       title = _data3.title,
       author = _data3.author,
@@ -250,13 +251,26 @@ var getDataFromStorage = function getDataFromStorage(data) {
   localStorage.setItem('genre', JSON.stringify(genreArray));
 };
 
+var conditionsForForm = function conditionsForForm() {
+  var isError = form.hasAttribute('error');
+
+  if (isError == true) {
+    displayErrors();
+  } else {
+    createTable();
+    setDatatoStorage();
+    clearInputs();
+  }
+};
+
 var checkInputs = function checkInputs() {
   var inputs = document.querySelectorAll('input');
-  formInputs = _defineProperty({
+  formInputs = {
     title: inputs[0],
     author: inputs[1],
-    priority: inputs[2]
-  }, "title", inputs[3]);
+    priority: inputs[2],
+    genre: inputs[3]
+  };
 
   var _iterator2 = _createForOfIteratorHelper(inputs),
       _step2;
@@ -267,8 +281,10 @@ var checkInputs = function checkInputs() {
 
       if (input.value == '' || input.value == 0 || input.value == null) {
         var setErrorAtt = input.setAttribute('error', '');
+        var setErrorToForm = form.setAttribute('error', '');
       } else {
         var removeErrorAtt = input.removeAttribute('error');
+        var removeErrorForm = form.removeAttribute('error');
       }
     }
   } catch (err) {
@@ -279,8 +295,10 @@ var checkInputs = function checkInputs() {
 
   if (formInputs.author.value.length < 3) {
     var setErrorForAuthor = formInputs.author.setAttribute('error', '');
+    var setErrorForm = form.setAttribute('error', '');
   } else {
     var removeErrorForAuthor = formInputs.author.removeAttribute('error');
+    var rErrorForm = form.removeAttribute('error');
   }
 };
 
@@ -288,12 +306,10 @@ form.addEventListener('submit', function (e) {
   e.preventDefault();
   setData();
   checkInputs();
-  displayErrors();
-  clearInputs();
+  conditionsForForm();
 });
 window.addEventListener('load', function () {
   getDataToTable();
-  console.log('Czy to działa?');
 });
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -323,7 +339,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52672" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52610" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
