@@ -413,6 +413,14 @@ priority.addEventListener("focusout", function (event) {
     displayErrorsSelect();
   }
 });
+priority.addEventListener("change", function (event) {
+  var priorityValue = event.target.value;
+
+  if (priorityValue) {
+    priority.removeAttribute("error");
+    displayErrorsSelect();
+  }
+});
 genre.addEventListener("focusout", function (event) {
   var genreValue = event.target.value;
 
@@ -420,6 +428,14 @@ genre.addEventListener("focusout", function (event) {
     genre.setAttribute("error", "");
     displayErrorsSelect();
   } else {
+    genre.removeAttribute("error");
+    displayErrorsSelect();
+  }
+});
+genre.addEventListener("change", function (event) {
+  var genreValue = event.target.value;
+
+  if (genreValue) {
     genre.removeAttribute("error");
     displayErrorsSelect();
   }

@@ -21,7 +21,6 @@ formSelects = {
 const { title, author } = formInputs;
 const { priority, genre } = formSelects;
 
-
 const getDataToTable = (data) => {
   data = {
     title: JSON.parse(localStorage.getItem("title")),
@@ -217,7 +216,6 @@ const checkForm = () => {
       form.setAttribute("error", "");
     } else {
       select.removeAttribute("error");
-
     }
   }
 };
@@ -230,7 +228,7 @@ title.addEventListener("focusout", (event) => {
     displayErrors();
   } else {
     title.removeAttribute("error");
-    form.removeAttribute("error")
+    form.removeAttribute("error");
     displayErrors();
   }
 });
@@ -257,6 +255,14 @@ priority.addEventListener("focusout", (event) => {
   }
 });
 
+priority.addEventListener("change", (event) => {
+  const priorityValue = event.target.value;
+  if (priorityValue) {
+    priority.removeAttribute("error");
+    displayErrorsSelect();
+  }
+});
+
 genre.addEventListener("focusout", (event) => {
   const genreValue = event.target.value;
   if (!genreValue) {
@@ -268,8 +274,16 @@ genre.addEventListener("focusout", (event) => {
   }
 });
 
+genre.addEventListener("change", (event) => {
+  const genreValue = event.target.value;
+  if (genreValue) {
+    genre.removeAttribute("error");
+    displayErrorsSelect();
+  }
+});
+
 form.addEventListener("submit", (e) => {
-  debugger
+  debugger;
   e.preventDefault();
 
   checkForm();
