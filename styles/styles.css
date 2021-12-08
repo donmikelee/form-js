@@ -92,23 +92,33 @@ form h1 {
 
 .table{
   width: 834px;
-  height: 596px;
+  height: 576px;
   background-color: white;
   border-radius: 8px;
   margin: 20px auto 20px auto;
+  padding-top: 20px;
+}
+
+.table > h1 {
+  margin-left: 60px;
 }
 
 .table > table {
   margin: 0 auto 0 auto;
+  width: 714px;
 }
 
 
 thead > td, th {
-  border: 1px solid #dddddd;
+  border-bottom: 2px solid black;
   text-align: left;
   padding: 8px;
 }
 
+tbody > tr {
+  height: 16px;
+}
+
 tbody > tr:nth-child(odd) {
-  background-color: #dddddd;
+  background: rgba(47, 125, 243, 0.1);
 }

@@ -124,6 +124,9 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+/* VARIABLES */
+
+/* Collecting all importent elements */
 var form = document.getElementById("form");
 var tableBody = document.querySelector("tbody");
 var submit = document.getElementById("submit");
@@ -145,6 +148,11 @@ var _formInputs = formInputs,
 var _formSelects = formSelects,
     priority = _formSelects.priority,
     genre = _formSelects.genre;
+/* ************************************* */
+
+/* EXPLAINING ALL FUNCTIONS */
+
+/* When window load up, getDataToTable function gets all data from localStorage and create table*/
 
 var getDataToTable = function getDataToTable(data) {
   data = {
@@ -177,6 +185,8 @@ var getDataToTable = function getDataToTable(data) {
     console.log("Brak danych do pobrania");
   }
 };
+/* Creates table from inputs and selects values after submitting form */
+
 
 var createTable = function createTable(data) {
   data = {
@@ -201,6 +211,8 @@ var createTable = function createTable(data) {
 
   tableBody.appendChild(row);
 };
+/* Cleares all inputs and selects values */
+
 
 var clearInputs = function clearInputs() {
   var _iterator = _createForOfIteratorHelper(inputs),
@@ -231,6 +243,8 @@ var clearInputs = function clearInputs() {
     _iterator2.f();
   }
 };
+/* To keep values in array, this funciton initials array to localStorage */
+
 
 var setData = function setData() {
   if (localStorage.getItem("title") == null) {
@@ -240,6 +254,8 @@ var setData = function setData() {
     localStorage.setItem("genre", "[]");
   }
 };
+/* It displays error messages above inputs */
+
 
 var displayErrors = function displayErrors() {
   for (i = 0; i < inputs.length; i++) {
@@ -261,6 +277,8 @@ var displayErrors = function displayErrors() {
     }
   }
 };
+/* It displays error messages above selects*/
+
 
 var displayErrorsSelect = function displayErrorsSelect() {
   for (i = 0; i < selects.length; i++) {
@@ -282,6 +300,8 @@ var displayErrorsSelect = function displayErrorsSelect() {
     }
   }
 };
+/* First takes arrays from localStorage, then grabs all values and sends it into localStorage*/
+
 
 var setDatatoStorage = function setDatatoStorage(data) {
   data = {
@@ -308,19 +328,8 @@ var setDatatoStorage = function setDatatoStorage(data) {
   localStorage.setItem("priority", JSON.stringify(priorityArray));
   localStorage.setItem("genre", JSON.stringify(genreArray));
 };
+/* It blocks button or makes it able for user */
 
-var conditionsForForm = function conditionsForForm() {
-  var isError = form.hasAttribute("error");
-
-  if (isError) {
-    displayErrors();
-    displayErrorsSelect();
-  } else {
-    createTable();
-    setDatatoStorage();
-    clearInputs();
-  }
-};
 
 var enableButton = function enableButton() {
   setInterval(function () {
@@ -334,49 +343,12 @@ var enableButton = function enableButton() {
     }
   }, 100);
 };
+/* ************************************* */
 
-var checkForm = function checkForm() {
-  var _iterator3 = _createForOfIteratorHelper(inputs),
-      _step3;
+/*EVENT LISTENERS*/
 
-  try {
-    for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-      var input = _step3.value;
+/*Every listener on inputs or selects purpose is validation*/
 
-      if (!input.value) {
-        input.setAttribute("error", "");
-        form.setAttribute("error", "");
-      } else {
-        input.removeAttribute("error");
-        form.removeAttribute("error");
-      }
-    }
-  } catch (err) {
-    _iterator3.e(err);
-  } finally {
-    _iterator3.f();
-  }
-
-  var _iterator4 = _createForOfIteratorHelper(selects),
-      _step4;
-
-  try {
-    for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
-      var select = _step4.value;
-
-      if (!select.value) {
-        select.setAttribute("error", "");
-        form.setAttribute("error", "");
-      } else {
-        select.removeAttribute("error");
-      }
-    }
-  } catch (err) {
-    _iterator4.e(err);
-  } finally {
-    _iterator4.f();
-  }
-};
 
 title.addEventListener("focusout", function (event) {
   var titleValue = event.target.value.trim();
@@ -441,11 +413,11 @@ genre.addEventListener("change", function (event) {
   }
 });
 form.addEventListener("submit", function (e) {
-  debugger;
   e.preventDefault();
-  checkForm();
   setData();
-  conditionsForForm();
+  createTable();
+  setDatatoStorage();
+  clearInputs();
 });
 window.addEventListener("load", function () {
   getDataToTable();
@@ -479,7 +451,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63685" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63449" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

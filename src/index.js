@@ -1,3 +1,6 @@
+/* VARIABLES */
+/* Collecting all importent elements */
+
 const form = document.getElementById("form");
 
 const tableBody = document.querySelector("tbody");
@@ -20,6 +23,14 @@ formSelects = {
 
 const { title, author } = formInputs;
 const { priority, genre } = formSelects;
+
+/* ************************************* */
+
+
+
+/* EXPLAINING ALL FUNCTIONS */
+
+/* When window load up, getDataToTable function gets all data from localStorage and create table*/
 
 const getDataToTable = (data) => {
   data = {
@@ -54,6 +65,8 @@ const getDataToTable = (data) => {
   }
 };
 
+/* Creates table from inputs and selects values after submitting form */
+
 const createTable = (data) => {
   data = {
     title: document.getElementById("book-title").value.trim(),
@@ -79,6 +92,8 @@ const createTable = (data) => {
   tableBody.appendChild(row);
 };
 
+/* Cleares all inputs and selects values */
+
 const clearInputs = () => {
   for (let input of inputs) {
     input.value = "";
@@ -89,6 +104,8 @@ const clearInputs = () => {
   }
 };
 
+/* To keep values in array, this funciton initials array to localStorage */
+
 const setData = () => {
   if (localStorage.getItem("title") == null) {
     localStorage.setItem("title", "[]");
@@ -97,6 +114,8 @@ const setData = () => {
     localStorage.setItem("genre", "[]");
   }
 };
+
+/* It displays error messages above inputs */
 
 const displayErrors = () => {
   for (i = 0; i < inputs.length; i++) {
@@ -119,6 +138,8 @@ const displayErrors = () => {
   }
 };
 
+/* It displays error messages above selects*/
+
 const displayErrorsSelect = () => {
   for (i = 0; i < selects.length; i++) {
     const isError = selects[i].hasAttribute("error");
@@ -139,6 +160,8 @@ const displayErrorsSelect = () => {
     }
   }
 };
+
+/* First takes arrays from localStorage, then grabs all values and sends it into localStorage*/
 
 const setDatatoStorage = (data) => {
   data = {
@@ -168,18 +191,7 @@ const setDatatoStorage = (data) => {
   localStorage.setItem("genre", JSON.stringify(genreArray));
 };
 
-const conditionsForForm = () => {
-  const isError = form.hasAttribute("error");
-
-  if (isError) {
-    displayErrors();
-    displayErrorsSelect();
-  } else {
-    createTable();
-    setDatatoStorage();
-    clearInputs();
-  }
-};
+/* It blocks button or makes it able for user */
 
 const enableButton = () => {
   setInterval(() => {
@@ -199,26 +211,13 @@ const enableButton = () => {
   }, 100);
 };
 
-const checkForm = () => {
-  for (let input of inputs) {
-    if (!input.value) {
-      input.setAttribute("error", "");
-      form.setAttribute("error", "");
-    } else {
-      input.removeAttribute("error");
-      form.removeAttribute("error");
-    }
-  }
+/* ************************************* */
 
-  for (let select of selects) {
-    if (!select.value) {
-      select.setAttribute("error", "");
-      form.setAttribute("error", "");
-    } else {
-      select.removeAttribute("error");
-    }
-  }
-};
+
+
+/*EVENT LISTENERS*/
+
+/*Every listener on inputs or selects purpose is validation*/
 
 title.addEventListener("focusout", (event) => {
   const titleValue = event.target.value.trim();
@@ -283,12 +282,12 @@ genre.addEventListener("change", (event) => {
 });
 
 form.addEventListener("submit", (e) => {
-  debugger;
   e.preventDefault();
 
-  checkForm();
   setData();
-  conditionsForForm();
+  createTable();
+  setDatatoStorage();
+  clearInputs();
 });
 
 window.addEventListener("load", () => {

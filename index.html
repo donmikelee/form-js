@@ -24,7 +24,6 @@
           <input id="author-name" type="text" />
           <div class="error-message"></div>
           <label for="number-of-priority">Number of prority</label>
-          <div class="error-message-select"></div>
           <select name="number-of-priority" id="priority">
             <option disabled selected value hidden></option>
             <option value="1">1</option>
@@ -33,19 +32,21 @@
             <option value="4">4</option>
             <option value="5">5</option>
           </select>
-          <label for="book-genres">Book genres</label>
           <div class="error-message-select"></div>
+          <label for="book-genres">Book genres</label>
           <select name="book-genres" id="book-genre">
             <option disabled selected value hidden></option>
             <option value="Thriller">Thriller</option>
             <option value="Mystery">Mystery</option>
             <option value="Fantasy">Fantasy</option>
           </select>
+          <div class="error-message-select"></div>
           <button id="submit" class="disabled" type="submit">add a book</button>
         </div>
       </form>
       <section>
         <div class="table">
+          <h1>Library</h1>
           <table id="table">
             <thead>
               <tr>
