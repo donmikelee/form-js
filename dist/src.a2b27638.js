@@ -124,15 +124,34 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-var form = document.getElementById('form');
-var tableBody = document.querySelector('tbody');
+var form = document.getElementById("form");
+var tableBody = document.querySelector("tbody");
+var submit = document.getElementById("submit");
+var inputs = document.querySelectorAll("input");
+var selects = document.querySelectorAll("select");
+var errorMessages = document.querySelectorAll(".error-message");
+var errorMessagesSelect = document.querySelectorAll(".error-message-select");
+formInputs = {
+  title: inputs[0],
+  author: inputs[1]
+};
+formSelects = {
+  priority: selects[0],
+  genre: selects[1]
+};
+var _formInputs = formInputs,
+    title = _formInputs.title,
+    author = _formInputs.author;
+var _formSelects = formSelects,
+    priority = _formSelects.priority,
+    genre = _formSelects.genre;
 
 var getDataToTable = function getDataToTable(data) {
   data = {
-    title: JSON.parse(localStorage.getItem('title')),
-    author: JSON.parse(localStorage.getItem('author')),
-    priority: JSON.parse(localStorage.getItem('priority')),
-    genre: JSON.parse(localStorage.getItem('genre'))
+    title: JSON.parse(localStorage.getItem("title")),
+    author: JSON.parse(localStorage.getItem("author")),
+    priority: JSON.parse(localStorage.getItem("priority")),
+    genre: JSON.parse(localStorage.getItem("genre"))
   };
   var _data = data,
       title = _data.title,
@@ -155,16 +174,16 @@ var getDataToTable = function getDataToTable(data) {
       cell4.innerHTML = genre[i];
     }
   } else {
-    console.log('Brak danych do pobrania');
+    console.log("Brak danych do pobrania");
   }
 };
 
 var createTable = function createTable(data) {
   data = {
-    title: document.getElementById('book-title').value.trim(),
-    author: document.getElementById('author-name').value.trim(),
-    priority: document.getElementById('priority').value.trim(),
-    genre: document.getElementById('book-genre').value.trim()
+    title: document.getElementById("book-title").value.trim(),
+    author: document.getElementById("author-name").value.trim(),
+    priority: document.getElementById("priority").value.trim(),
+    genre: document.getElementById("book-genre").value.trim()
   };
   var _data2 = data,
       title = _data2.title,
@@ -172,10 +191,10 @@ var createTable = function createTable(data) {
       priority = _data2.priority,
       genre = _data2.genre;
   var dataArray = [title, author, priority, genre];
-  var row = document.createElement('tr');
+  var row = document.createElement("tr");
 
   for (i = 0; i < dataArray.length; i++) {
-    var cell = document.createElement('td');
+    var cell = document.createElement("td");
     cell.innerHTML = dataArray[i];
     row.appendChild(cell);
   }
@@ -184,78 +203,118 @@ var createTable = function createTable(data) {
 };
 
 var clearInputs = function clearInputs() {
-  var inputs = document.querySelectorAll('input');
-
   var _iterator = _createForOfIteratorHelper(inputs),
       _step;
 
   try {
     for (_iterator.s(); !(_step = _iterator.n()).done;) {
       var input = _step.value;
-      input.value = '';
+      input.value = "";
     }
   } catch (err) {
     _iterator.e(err);
   } finally {
     _iterator.f();
   }
+
+  var _iterator2 = _createForOfIteratorHelper(selects),
+      _step2;
+
+  try {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var select = _step2.value;
+      select.value = "";
+    }
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
+  }
 };
 
 var setData = function setData() {
-  if (localStorage.getItem('title') == null) {
-    localStorage.setItem('title', '[]');
-    localStorage.setItem('author', '[]');
-    localStorage.setItem('priority', '[]');
-    localStorage.setItem('genre', '[]');
+  if (localStorage.getItem("title") == null) {
+    localStorage.setItem("title", "[]");
+    localStorage.setItem("author", "[]");
+    localStorage.setItem("priority", "[]");
+    localStorage.setItem("genre", "[]");
   }
 };
 
 var displayErrors = function displayErrors() {
-  var inputs = document.querySelectorAll('input');
-  var errorMessages = document.querySelectorAll('.error-message');
-
   for (i = 0; i < inputs.length; i++) {
-    var isError = inputs[i].hasAttribute('error');
+    var isError = inputs[i].hasAttribute("error");
 
     if (isError) {
-      errorMessages[i].innerHTML = "Pole zosta\u0142o \u017Ale wype\u0142nione";
-    } else {
+      errorMessages[i].innerHTML = "Title should be at least 1 character long";
+      inputs[i].classList.add("error");
+    }
+
+    if (isError && i === 1) {
+      inputs[i].classList.add("error");
+      errorMessages[i].innerHTML = "Author should be at least 3 characters long";
+    }
+
+    if (!isError) {
+      inputs[i].classList.remove("error");
       errorMessages[i].innerHTML = "";
+    }
+  }
+};
+
+var displayErrorsSelect = function displayErrorsSelect() {
+  for (i = 0; i < selects.length; i++) {
+    var isError = selects[i].hasAttribute("error");
+
+    if (isError) {
+      errorMessagesSelect[i].innerHTML = "Choose number of priority from the list";
+      selects[i].classList.add("error");
+    }
+
+    if (isError && i === 1) {
+      errorMessagesSelect[i].innerHTML = "Choose genre from the list";
+      selects[i].classList.add("error");
+    }
+
+    if (!isError) {
+      selects[i].classList.remove("error");
+      errorMessagesSelect[i].innerHTML = "";
     }
   }
 };
 
 var setDatatoStorage = function setDatatoStorage(data) {
   data = {
-    title: document.getElementById('book-title').value.trim(),
-    author: document.getElementById('author-name').value.trim(),
-    priority: document.getElementById('priority').value.trim(),
-    genre: document.getElementById('book-genre').value.trim()
+    title: document.getElementById("book-title").value.trim(),
+    author: document.getElementById("author-name").value.trim(),
+    priority: document.getElementById("priority").value.trim(),
+    genre: document.getElementById("book-genre").value.trim()
   };
   var _data3 = data,
       title = _data3.title,
       author = _data3.author,
       priority = _data3.priority,
       genre = _data3.genre;
-  var titleArray = JSON.parse(localStorage.getItem('title'));
+  var titleArray = JSON.parse(localStorage.getItem("title"));
   titleArray.push(title);
-  var authorArray = JSON.parse(localStorage.getItem('author'));
+  var authorArray = JSON.parse(localStorage.getItem("author"));
   authorArray.push(author);
-  var priorityArray = JSON.parse(localStorage.getItem('priority'));
+  var priorityArray = JSON.parse(localStorage.getItem("priority"));
   priorityArray.push(priority);
-  var genreArray = JSON.parse(localStorage.getItem('genre'));
+  var genreArray = JSON.parse(localStorage.getItem("genre"));
   genreArray.push(genre);
-  localStorage.setItem('title', JSON.stringify(titleArray));
-  localStorage.setItem('author', JSON.stringify(authorArray));
-  localStorage.setItem('priority', JSON.stringify(priorityArray));
-  localStorage.setItem('genre', JSON.stringify(genreArray));
+  localStorage.setItem("title", JSON.stringify(titleArray));
+  localStorage.setItem("author", JSON.stringify(authorArray));
+  localStorage.setItem("priority", JSON.stringify(priorityArray));
+  localStorage.setItem("genre", JSON.stringify(genreArray));
 };
 
 var conditionsForForm = function conditionsForForm() {
-  var isError = form.hasAttribute('error');
+  var isError = form.hasAttribute("error");
 
-  if (isError == true) {
+  if (isError) {
     displayErrors();
+    displayErrorsSelect();
   } else {
     createTable();
     setDatatoStorage();
@@ -263,54 +322,119 @@ var conditionsForForm = function conditionsForForm() {
   }
 };
 
-var checkInputs = function checkInputs() {
-  var inputs = document.querySelectorAll('input');
-  formInputs = {
-    title: inputs[0],
-    author: inputs[1],
-    priority: inputs[2],
-    genre: inputs[3]
-  };
+var enableButton = function enableButton() {
+  setInterval(function () {
+    var titleValue = title.value.trim();
+    var authorValue = author.value.trim();
 
-  var _iterator2 = _createForOfIteratorHelper(inputs),
-      _step2;
+    if (titleValue.length > 0 && authorValue.length >= 3 && priority.value.length > 0 && genre.value.length > 0) {
+      submit.classList.remove("disabled");
+    } else {
+      submit.classList.add("disabled");
+    }
+  }, 100);
+};
+
+var checkForm = function checkForm() {
+  var _iterator3 = _createForOfIteratorHelper(inputs),
+      _step3;
 
   try {
-    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-      var input = _step2.value;
+    for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+      var input = _step3.value;
 
-      if (input.value == '' || input.value == 0 || input.value == null) {
-        var setErrorAtt = input.setAttribute('error', '');
-        var setErrorToForm = form.setAttribute('error', '');
+      if (!input.value) {
+        input.setAttribute("error", "");
+        form.setAttribute("error", "");
       } else {
-        var removeErrorAtt = input.removeAttribute('error');
-        var removeErrorForm = form.removeAttribute('error');
+        input.removeAttribute("error");
+        form.removeAttribute("error");
       }
     }
   } catch (err) {
-    _iterator2.e(err);
+    _iterator3.e(err);
   } finally {
-    _iterator2.f();
+    _iterator3.f();
   }
 
-  if (formInputs.author.value.length < 3) {
-    var setErrorForAuthor = formInputs.author.setAttribute('error', '');
-    var setErrorForm = form.setAttribute('error', '');
-  } else {
-    var removeErrorForAuthor = formInputs.author.removeAttribute('error');
-    var rErrorForm = form.removeAttribute('error');
+  var _iterator4 = _createForOfIteratorHelper(selects),
+      _step4;
+
+  try {
+    for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+      var select = _step4.value;
+
+      if (!select.value) {
+        select.setAttribute("error", "");
+        form.setAttribute("error", "");
+      } else {
+        select.removeAttribute("error");
+      }
+    }
+  } catch (err) {
+    _iterator4.e(err);
+  } finally {
+    _iterator4.f();
   }
 };
 
-form.addEventListener('submit', function (e) {
+title.addEventListener("focusout", function (event) {
+  var titleValue = event.target.value.trim();
+
+  if (titleValue.length < 1) {
+    title.setAttribute("error", "");
+    form.setAttribute("error", "");
+    displayErrors();
+  } else {
+    title.removeAttribute("error");
+    form.removeAttribute("error");
+    displayErrors();
+  }
+});
+author.addEventListener("focusout", function (event) {
+  var authorValue = event.target.value.trim();
+
+  if (authorValue.length < 3) {
+    author.setAttribute("error", "");
+    displayErrors();
+  } else {
+    author.removeAttribute("error");
+    displayErrors();
+  }
+});
+priority.addEventListener("focusout", function (event) {
+  var priorityValue = event.target.value;
+
+  if (!priorityValue) {
+    priority.setAttribute("error", "");
+    displayErrorsSelect();
+  } else {
+    priority.removeAttribute("error");
+    displayErrorsSelect();
+  }
+});
+genre.addEventListener("focusout", function (event) {
+  var genreValue = event.target.value;
+
+  if (!genreValue) {
+    genre.setAttribute("error", "");
+    displayErrorsSelect();
+  } else {
+    genre.removeAttribute("error");
+    displayErrorsSelect();
+  }
+});
+form.addEventListener("submit", function (e) {
+  debugger;
   e.preventDefault();
+  checkForm();
   setData();
-  checkInputs();
   conditionsForForm();
 });
-window.addEventListener('load', function () {
+window.addEventListener("load", function () {
   getDataToTable();
 });
+enableButton();
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -339,7 +463,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52610" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63685" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
